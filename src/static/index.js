@@ -15,15 +15,7 @@ function uploadImage() {
             const responseMessage = document.getElementById('response-message');
             
             if (data.message === 'Upload successful!') {
-                responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.message}</div>`;
-                
-                // const imageLink = data.image_link;
-                // fetch('/uploads/' + imageLink, {
-                //     method: 'GET',
-                // })
-                // .then(response => response.json()) {
-
-                // }
+                responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.caption}</div>`;
 
             } else {
                 // Display error message
@@ -40,8 +32,6 @@ function uploadImage() {
         responseMessage.innerHTML = '<div class="alert alert-warning" role="alert">No file selected. Please choose a file to upload.</div>';
     }
 }
-
-
 
 function chooseFile() {
     document.getElementById('file-input').click();

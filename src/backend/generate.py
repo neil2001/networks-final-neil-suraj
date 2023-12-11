@@ -1,8 +1,10 @@
 import torch
 import clip
 from PIL import Image
-import requests
 from io import BytesIO
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model, preprocess = clip.load("ViT-B/32", device=device)
 
 def precompute_text_embeddings(captions, model, device):
     text_tokens = clip.tokenize(captions).to(device)
@@ -24,9 +26,6 @@ def get_highest_similarity_caption(model, device, preprocess, image_path, cached
         max_similarity, max_index = similarities.max(dim=0)
 
     return captions[max_index], max_similarity.item()
-
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-B/32", device=device)
 
 one_liners = [
     "My wife told me to stop impersonating a flamingo. I had to put my foot down.",
@@ -132,9 +131,16 @@ one_liners = [
     "Have you heard about the new restaurant called 'Karma?' There's no menu—you get what you deserve."
 ]
 
-cached_text_features = precompute_text_embeddings(one_liners, model, device)
+# cached_text_features = precompute_text_embeddings(one_liners, model, device)
 
-image_path = 'src/uploads/Screenshot_2023-12-08_at_4.53.25_PM.png'
-best_caption, similarity_score = get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, one_liners)
-print("Best Caption:", best_caption)
-print("Similarity Score:", similarity_score)
+def make_text_features():
+    return precompute_text_embeddings(one_liners, model, device)
+
+# image_path = 'src/uploads/Screenshot_2023-12-08_at_4.53.25_PM.png'
+# best_caption, similarity_score = get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, one_liners)
+
+def get_meme_caption(image_path, cached_text_features):
+    best_caption, similarity_score = get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, one_liners)
+    print("Best Caption:", best_caption)
+    print("Similarity Score:", similarity_score)
+    return best_caption

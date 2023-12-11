@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify, send_file
 import os
 from werkzeug.utils import secure_filename
+from backend.generate import make_text_features, get_meme_caption
 
 app = Flask(__name__)
+
+cached_text_features = make_text_features()
 
 # Set the upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -20,6 +23,7 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -40,7 +44,10 @@ def upload():
         # Create a temporary link to the uploaded file
         image_link = '/uploads/' + filename
 
-        return jsonify({'message': 'Upload successful!', 'image_link': image_link})
+        caption = get_meme_caption(filepath, cached_text_features)
+        return jsonify({'message': 'Upload successful!', 'caption': caption, 'image_link': image_link})
+
+        # return jsonify({'message': 'Upload successful!', 'image_link': image_link})
 
     return jsonify({'message': 'Invalid file format. Allowed formats: png, jpg, jpeg, gif'}), 400
 
