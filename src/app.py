@@ -2,10 +2,12 @@ from flask import Flask, render_template, request, jsonify, send_file
 import os
 from werkzeug.utils import secure_filename
 from backend.generate import make_text_features, get_meme_caption
+import random
 
 app = Flask(__name__)
 
 cached_text_features = make_text_features()
+
 
 # Set the upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -23,7 +25,6 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -44,17 +45,34 @@ def upload():
         # Create a temporary link to the uploaded file
         image_link = '/uploads/' + filename
 
-        caption = get_meme_caption(filepath, cached_text_features)
+        print('image link', image_link)
+
+        caption = get_meme_caption(1, filepath, cached_text_features)
         return jsonify({'message': 'Upload successful!', 'caption': caption, 'image_link': image_link})
 
         # return jsonify({'message': 'Upload successful!', 'image_link': image_link})
 
     return jsonify({'message': 'Invalid file format. Allowed formats: png, jpg, jpeg, gif'}), 400
 
-@app.route('/uploads/<filename>')
-def serve_image(filename):
+@app.route('/regenerate')
+def regenerate():
+    filepath = request.args.get('filename')[1:]
+    # print("filename", request.filename)
+    # filename = request.filename
+    print(filepath)
     # print("getting image", os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return send_file(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    # filepath = os.path.join(app.config['UPLOAD_FOLDER'])
+    # print("filepath", filepath)
+    # Generate a random integer between 1 and 10 (inclusive)
+    random_number = random.randint(1, 10)
+
+    caption = get_meme_caption(random_number, filepath, cached_text_features)
+    
+    return jsonify({'message': 'Upload successful!', 'caption': caption})
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# /uploads/62415843204__265BC2A4-1F99-4DA4-806E-DBA706DCC2DB.jpeg
+# /uploads/62415843204__265BC2A4-1F99-4DA4-806E-DBA706DCC2DB.jpeg

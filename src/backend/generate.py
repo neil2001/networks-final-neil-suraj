@@ -23,10 +23,13 @@ def get_kth_highest_similarity_caption(k, model, device, preprocess, image_path,
         image_features = model.encode_image(image)
         image_features /= image_features.norm(dim=-1, keepdim=True)
         similarities = (cached_text_features @ image_features.T).squeeze(0)
-        sorted_similarities, sorted_indices = similarities.sort(descending=True)
+        # print(similarities)
+        sorted_similarities, sorted_indices = torch.sort(similarities, 0, descending=True)
+        # print(sorted_indices)
         
         if k > 0 and k <= len(captions):
             kth_index = sorted_indices[k-1]
+            print("kth_index: ", kth_index)
             kth_similarity = sorted_similarities[k-1]
             return captions[kth_index], kth_similarity.item()
         else:

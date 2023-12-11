@@ -36,6 +36,32 @@ function uploadImage() {
     }
 }
 
+function regenerateImage() {
+    // const formData = new FormData();
+    // formData.append('filename', imagePath);
+
+    const url = `/regenerate?filename=${encodeURIComponent(imagePath)}`;
+
+    fetch(url, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        const responseMessage = document.getElementById('response-message');
+        
+        if (data.message === 'Upload successful!') {
+            responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.caption}</div>`;
+        } else {
+            responseMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        const responseMessage = document.getElementById('response-message');
+        responseMessage.innerHTML = '<div class="alert alert-danger" role="alert">Upload failed. Please try again.</div>';
+    });
+}
+
 function chooseFile() {
     document.getElementById('file-input').click();
 }
@@ -55,3 +81,5 @@ function displayImage() {
         reader.readAsDataURL(file);
     }
 }
+
+// 62415843204__265BC2A4-1F99-4DA4-806E-DBA706DCC2DB
