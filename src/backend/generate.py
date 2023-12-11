@@ -15,7 +15,7 @@ def precompute_text_embeddings(captions, model, device):
 
     return text_features
 
-def get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, captions):
+def get_kth_highest_similarity_caption(k, model, device, preprocess, image_path, cached_text_features, captions):
     image = Image.open(image_path)
     image = preprocess(image).unsqueeze(0).to(device)
 
@@ -23,9 +23,14 @@ def get_highest_similarity_caption(model, device, preprocess, image_path, cached
         image_features = model.encode_image(image)
         image_features /= image_features.norm(dim=-1, keepdim=True)
         similarities = (cached_text_features @ image_features.T).squeeze(0)
-        max_similarity, max_index = similarities.max(dim=0)
-
-    return captions[max_index], max_similarity.item()
+        sorted_similarities, sorted_indices = similarities.sort(descending=True)
+        
+        if k > 0 and k <= len(captions):
+            kth_index = sorted_indices[k-1]
+            kth_similarity = sorted_similarities[k-1]
+            return captions[kth_index], kth_similarity.item()
+        else:
+            raise ValueError("k is out of range. It should be between 1 and the number of captions.")
 
 one_liners = [
     "My wife told me to stop impersonating a flamingo. I had to put my foot down.",
