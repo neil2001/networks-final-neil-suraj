@@ -16,6 +16,15 @@ function uploadImage() {
             
             if (data.message === 'Upload successful!') {
                 responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.message}</div>`;
+                
+                // const imageLink = data.image_link;
+                // fetch('/uploads/' + imageLink, {
+                //     method: 'GET',
+                // })
+                // .then(response => response.json()) {
+
+                // }
+
             } else {
                 // Display error message
                 responseMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
