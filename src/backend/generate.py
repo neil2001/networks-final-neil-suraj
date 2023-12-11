@@ -144,8 +144,8 @@ def make_text_features():
 # image_path = 'src/uploads/Screenshot_2023-12-08_at_4.53.25_PM.png'
 # best_caption, similarity_score = get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, one_liners)
 
-def get_meme_caption(image_path, cached_text_features):
-    best_caption, similarity_score = get_highest_similarity_caption(model, device, preprocess, image_path, cached_text_features, one_liners)
+def get_meme_caption(k, image_path, cached_text_features):
+    best_caption, similarity_score = get_kth_highest_similarity_caption(k, model, device, preprocess, image_path, cached_text_features, one_liners)
     print("Best Caption:", best_caption)
     print("Similarity Score:", similarity_score)
     return best_caption
