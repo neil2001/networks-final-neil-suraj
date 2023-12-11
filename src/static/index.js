@@ -1,3 +1,5 @@
+var imagePath = "";
+
 function uploadImage() {
     const input = document.getElementById('file-input');
     const file = input.files[0];
@@ -16,7 +18,8 @@ function uploadImage() {
             
             if (data.message === 'Upload successful!') {
                 responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.caption}</div>`;
-
+                imagePath = data.image_link;
+                console.log(imagePath);
             } else {
                 // Display error message
                 responseMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
