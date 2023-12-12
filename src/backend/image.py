@@ -17,10 +17,13 @@ def add_caption(image_path, caption_text, output_path):
     # Choose a font and size for the caption
     font = ImageFont.load_default()
 
+    # Calculate the size of the bounding box for the text
+    text_bbox = draw.textbbox((0, 0), caption_text, font=font)
+
     # Calculate the position to center the text
-    text_width, text_height = draw.textsize(caption_text, font)
-    text_x = (width - text_width) // 2
-    text_y = height + 10  # Adjust as needed
+    text_width, text_height = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
+    text_x = (image.width - text_width) // 2
+    text_y = image.height + 10
 
     # Add the caption text in black
     draw.text((text_x, text_y), caption_text, font=font, fill='black')

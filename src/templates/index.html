@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="">
         <div class="jumbotron" id="upload-container" onclick="chooseFile()">
             <h1 class="display-4">AI Meme Generator</h1>
             <p class="lead">Click or drag and drop to upload an image</p>
@@ -29,7 +29,7 @@
             <button style="display: none;" class="btn btn-secondary" id="regenerate-button" onclick="regenerateImage()">Regenerate</button>
             <button style="display: none;" class="btn btn-primary" id="make-meme-button" onclick="makeMemeImage()">Make Meme</button>
         </div>
-        <div id="imageContainer"></div>
+        <div id="imageContainer" class="img-fluid mx-auto"></div>
         <div class="text-center">
             <button style="display: none;" class="btn btn-primary" id="download-button" onclick="downloadImage()">Download Image</button>
         </div>

@@ -26,8 +26,8 @@ function uploadImage() {
                 const regenerateButton = document.getElementById('regenerate-button');
                 const makeMemeButton = document.getElementById('make-meme-button');
 
-                regenerateButton.style.display = 'block';
-                makeMemeButton.style.display = 'block';
+                regenerateButton.style.display = '';
+                makeMemeButton.style.display = '';
             } else {
                 // Display error message
                 responseMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
@@ -59,6 +59,7 @@ function regenerateImage() {
         
         if (data.message === 'Upload successful!') {
             responseMessage.innerHTML = `<div class="alert alert-success" role="alert">${data.caption}</div>`;
+            caption = data.caption;
         } else {
             responseMessage.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
         }
@@ -88,7 +89,7 @@ function makeMemeImage() {
         const downloadButton = document.getElementById('download-button');
 
         imageContainer.innerHTML = `<img src="${imageUrl}" alt="Generated Image">`;
-        downloadButton.style.display = 'block';
+        downloadButton.style.display = '';
     })
     .catch(error => {
         console.error('Error:', error);
