@@ -85,11 +85,14 @@ function makeMemeImage() {
     })
     .then(data => {
         const imageUrl = URL.createObjectURL(data);
+        const outputContainer = document.getElementById('output-container');
         const imageContainer = document.getElementById('imageContainer');
         const downloadButton = document.getElementById('download-button');
 
+        outputContainer.style.display = '';
         imageContainer.innerHTML = `<img src="${imageUrl}" alt="Generated Image">`;
         downloadButton.style.display = '';
+        
     })
     .catch(error => {
         console.error('Error:', error);

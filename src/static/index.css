@@ -1,4 +1,11 @@
 /* static/styles.css */
+#imageContainer img {
+    max-width: 100%;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+/* static/styles.css */
 
 body {
     display: flex;
@@ -25,11 +32,7 @@ body {
     max-height: 400px;
     margin-top: 20px;
     display: none;
-}
-
-#imageContainer img {
-    max-width: 100%;
-    margin-top: 20px;
+    border-radius: 4px;
 }
 
 #upload-button {
