@@ -1,13 +1,14 @@
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import os
 from werkzeug.utils import secure_filename
-from backend.generate import make_text_features, get_meme_caption
 import random
+
+from backend.generate import make_text_features, get_meme_caption
+from backend.image import add_caption
 
 app = Flask(__name__)
 
 cached_text_features = make_text_features()
-
 
 # Set the upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -19,11 +20,14 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Set allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+print("asdfasdf")
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
+@app.route("/")
 def index():
+    print("hello")
     return render_template('index.html')
 
 @app.route('/upload', methods=['POST'])
@@ -70,7 +74,24 @@ def regenerate():
     
     return jsonify({'message': 'Upload successful!', 'caption': caption})
 
+@app.route('/makeImage')
+def makeImage():
+    filepath = request.args.get('filename')[1:]
+    filename = os.path.basename(filepath)
+
+    caption = request.args.get('caption')
+
+    print(filename, caption)
+
+    add_caption(filepath, caption, 'output/' + filename)
+
+    try: 
+        return send_from_directory('output', filename)
+    except FileNotFoundError:
+        return jsonify({"error": "Image not found"})
+    
 if __name__ == '__main__':
+    print("running")
     app.run(debug=True)
 
 
